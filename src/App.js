@@ -1,5 +1,5 @@
 import React from 'react';
- import {ApolloClient,ApolloProvider,InMemoryCache} from '@apollo/client'
+import {ApolloClient,ApolloProvider,InMemoryCache} from '@apollo/client'
 import GlobalStyle from './components/GlobalStyle';
 
 

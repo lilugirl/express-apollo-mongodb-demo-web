@@ -1,7 +1,6 @@
 import React from 'react'
-import Button from '../components/Button'
-import ReactMarkdown from 'react-markdown';
 import{useQuery,gql} from '@apollo/client'
+import Button from '../components/Button';
 import NoteFeed from '../components/NoteFeed';
 
 // 把GraphQL查询存储为一个变量
@@ -36,7 +35,30 @@ const Home=()=>{
    if(error) return <p>Error!</p>;
 
    // 成功获取数据后，在UI中显示出来
-   return <NoteFeed notes={data.noteFeed.notes} />
+   return (<React.Fragment>
+       <NoteFeed notes={data.noteFeed.notes} />
+       {data.noteFeed.hasNextPage && (<Button onClick={()=>{
+           fetchMore({
+               variables:{
+                   cursor:data.noteFeed.cursor
+               },
+               updateQuery:(previousResult,{fetchMoreResult})=>{
+                   return {
+                       noteFeed:{
+                           cursor:fetchMoreResult.noteFeed.cursor,
+                           hasNextPage:fetchMoreResult.noteFeed.hasNextPage,
+                           // 把新旧结果合在一起
+                           notes:[
+                               ...previousResult.noteFeed.notes,
+                               ...fetchMoreResult.noteFeed.notes
+                           ],
+                           __typename:'noteFeed'
+                       }
+                   }
+            }
+           })
+       }}>Load more</Button>)}
+   </React.Fragment>)
 }
 
 export default Home

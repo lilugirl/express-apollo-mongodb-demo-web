@@ -1,6 +1,6 @@
 import React,{useEffect,useState} from 'react';
 import styled from 'styled-components';
-import {useMutation,useApolloClient,gql} from '@apollo/client';
+import {useMutation,gql} from '@apollo/client';
 
 import Button from '../components/Button';
 const SIGNUP_USER=gql`
@@ -47,7 +47,7 @@ const SignUp =props=>{
     }
 
     // 添加变更操作钩子
-    const [signUp,{loading,error}]=useMutation(SIGNUP_USER,{
+    const [signUp]=useMutation(SIGNUP_USER,{
         onCompleted:data=>{
             // 变更操作执行完毕把JSON Web Token输出到控制台中
             console.log(data.signUp)
